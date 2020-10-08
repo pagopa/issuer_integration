@@ -1,0 +1,172 @@
+openapi: 3.0.1
+info:
+  title: BPD HB Citizen API
+  description: Api and Models
+  version: '1.0'
+servers:
+  - url: https://test.cstar.pagopa.it/bpd/hb/citizens
+paths:
+  '/{id}':
+    get:
+      summary: find
+      description: find
+      operationId: 5f7d6ba3990aecbeb9fadf99
+      parameters:
+        - name: id
+          in: path
+          description: 'id dell’utente, che corrisponde al codice fiscale'
+          required: true
+          schema:
+            type: string
+        - name: x-request-id
+          in: header
+          description: UUID for request identification
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/CitizenResource'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: ''
+    patch:
+      summary: updatePaymentMethod
+      description: updatePaymentMethod
+      operationId: 5f7d6ba376aac3553a7d7997
+      parameters:
+        - name: id
+          in: path
+          description: 'id dell’utente, che corrisponde al codice fiscale'
+          required: true
+          schema:
+            type: string
+        - name: x-request-id
+          in: header
+          description: UUID for request identification
+          schema:
+            type: string
+      requestBody:
+        description: citizen
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CitizenPatchDTO'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '500':
+          description: ''
+    put:
+      summary: enrollmentCitizenHB
+      description: enrollmentCitizenHB
+      operationId: 5f7d6ba381543ac4387e97e1
+      parameters:
+        - name: id
+          in: path
+          description: 'id dell''utente, che corrisponde al codice fiscale'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitizenResource'
+        '401':
+          description: ''
+        '500':
+          description: ''
+components:
+  schemas:
+    CitizenDTO:
+      title: CitizenDTO
+      required:
+        - timestampTC
+      type: object
+      properties:
+        timestampTC:
+          type: string
+          description: timestamp dell'accettazione di T&C. FORMATO  ISO8601 yyyy-MM-ddTHH:mm:ss.SSSXXXXX
+          format: date-time
+    CitizenRankingResource:
+      title: CitizenRankingResource
+      required:
+        - totalParticipants
+        - ranking
+      type: object
+      properties:
+        totalParticipants:
+          type: integer
+          description: numero totale di partecipanti al Bonus Pagamenti Digitali
+          format: int64
+        ranking:
+          type: integer
+          description: posizione della graduatoria riferita al periodo di premiazione corrente
+          format: int64
+    CitizenResource:
+      title: CitizenResource
+      required:
+        - enabled
+        - fiscalCode
+        - payoffInstr
+        - payoffInstrType
+        - timestampTC
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: stato dell'abilitazione al servizio da parte del citizen
+        fiscalCode:
+          type: string
+          description: 'id dell''utente, che corrisponde al codice fiscale'
+        payoffInstr:
+          type: string
+          description: identificativo dello strumento di pagamento per la riscossione del premio
+        payoffInstrType:
+          type: string
+          description: tipologia di strumento di pagamento per la riscossione del premio
+        timestampTC:
+          type: string
+          description: timestamp dell'accettazione di T&C. FORMATO  ISO8601 yyyy-MM-ddTHH:mm:ss.SSSXXXXX
+          format: date-time
+    CitizenPatchDTO:
+      title: CitizenPatchDTO
+      required:
+        - payoffInstr
+        - payoffInstrType
+      type: object
+      properties:
+        payoffInstr:
+          type: string
+          description: identificativo dello strumento di pagamento per la riscossione del premio
+        payoffInstrType:
+          enum:
+            - IBAN
+          type: string
+          description: tipologia di strumento di pagamento per la riscossione del premio
+      example:
+        payoffInstr: string
+        payoffInstrType: string
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]

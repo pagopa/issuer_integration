@@ -1,0 +1,139 @@
+openapi: 3.0.1
+info:
+  title: BPD HB Payment Instruments API
+  description: ''
+  version: '1.0'
+servers:
+  - url: https://test.cstar.pagopa.it/bpd/hb/payment-instruments
+paths:
+  '/{id}':
+    delete:
+      summary: deletePaymentInstrumentHB
+      operationId: deletepaymentinstrumenthb
+      parameters:
+        - name: id
+          in: path
+          description: 'id dello strumento di pagamento, che corrisponde al PAN (Primary Account Number) del metodo di pagamento'
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: ''
+    put:
+      summary: enrollPaymentInstrumentHB
+      description: enrollPaymentInstrumentHB
+      operationId: enrollpaymentinstrumenthb
+      parameters:
+        - name: id
+          in: path
+          description: 'id dello strumento di pagamento, che corrisponde all''hash del PAN (Primary Account Number) del metodo di pagamento'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInstrumentDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentPaymentInstrumentResource'
+        '401':
+          description: ''
+        '403':
+          description: ''
+        '500':
+          description: Internal MedaCustom Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MicroServiceExceptionResponse'
+    get:
+      summary: statusPaymentInstrumentHB
+      operationId: statuspaymentinstrumenthb
+      parameters:
+        - name: id
+          in: path
+          description: 'id dello strumento di pagamento, che corrisponde all''hash del PAN (Primary Account Number) del metodo di pagamento'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: ''
+components:
+  schemas:
+    MicroServiceExceptionResponse:
+      title: MicroServiceExceptionResponse
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedaError'
+        mainError:
+          $ref: '#/components/schemas/MedaError'
+    PaymentInstrumentResource:
+      title: PaymentInstrumentResource
+      type: object
+      properties:
+        activationDate:
+          type: string
+          format: date-time
+        cancellationDate:
+          type: string
+          format: date-time
+        fiscalCode:
+          type: string
+        hpan:
+          type: string
+        status:
+          enum:
+            - ACTIVE
+            - INACTIVE
+          type: string
+    EnrollmentPaymentInstrumentResource:
+      title: EnrollmentPaymentInstrumentResource
+      type: object
+      properties:
+        activationDate:
+          type: string
+          description: Timestamp dell’attivazione dello strumento di pagamento. FORMATO  ISO8601 yyyy-MM-ddTHH:mm:ss.SSSXXXXX
+          format: date-time
+    PaymentInstrumentDto:
+      title: PaymentInstrumentDto
+      type: object
+      properties:
+        fiscalCode:
+          type: string
+          description: 'id dell''utente, che corrisponde al codice fiscale'
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]
