@@ -39,3 +39,9 @@ Other than the Award Period that will last 6 months ( for example: Jan2021 - Jun
 
 ### Could the Issuers send the token of the cards for the ApplePay and GooglePay transactions (which are currently TBD)? 
 The transactions that will be sent to CentroStella should include also the Apple/Google Pay transactions. These transactions must contain the tokenized PAN.
+
+### Will be possible for an User to subscribe and complete the onboarding process to BPD from his H/M Banking, if he wants to insert the IBAN of an account opened with another Issuer?
+The user could insert an IBAN from his H/M Banking only if it is associated to an account opened  with the same Issuer providing the H/M Banking website. However, if the Client wants to insert an IBAN related to another account, will be possible for the User to complete the Onboarding procedure from his H/M Banking, by skipping the "filling in IBAN" step. In this way, he could register correctly to BPD and in a later time, he could fill in the IBAN field by accessing APP IO or the H/M Banking website provided by the same Issuer he has opened the account with.
+
+### Will be necessary to accept again the T&C in case the T&C are updated/modified?
+No, there will be no need to accept again the T&C.
