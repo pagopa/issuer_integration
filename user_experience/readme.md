@@ -2,6 +2,8 @@
 
 I contenuti di questi documenti hanno lo scopo di descrivere l’esperienza utente nell’implementazione del servizio Cashback su IO.  
 
+Sono da considersi materiale da non divulgare pubblicamente.
+
 I file presenti verranno aggiornati sulla base delle evoluzioni del progetto e delle decisioni relative all'implementazione delle API condivise: data la fase del progetto, possono cambiare anche molto rapidamente e senza alcun preavviso.
 
 Loghi e altri riferimenti iconografici sono *meramente rappresentativi*.  
