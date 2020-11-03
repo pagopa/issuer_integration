@@ -4,11 +4,36 @@ info:
   description: ''
   version: '1.0'
 servers:
-  - url: https://test.cstar.pagopa.it/bpd/hb/payment-instruments
+  - url: https://bpd-dev.azure-api.net/bpd/hb/payment-instruments
 paths:
   '/{id}':
+    get:
+      summary: statusPaymentInstrumentHB
+      description: statusPaymentInstrumentHB
+      operationId: statuspaymentinstrumenthb
+      parameters:
+        - name: id
+          in: path
+          description: 'id dello strumento di pagamento, che corrisponde all''hash del PAN (Primary Account Number) del metodo di pagamento'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInstrumentResource'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: ''
     delete:
       summary: deletePaymentInstrumentHB
+      description: deletePaymentInstrumentHB
       operationId: deletepaymentinstrumenthb
       parameters:
         - name: id
@@ -24,25 +49,6 @@ paths:
           description: Bad Request
         '401':
           description: Unauthorized
-        '500':
-          description: ''
-    get:
-      summary: statusPaymentInstrumentHB
-      operationId: statuspaymentinstrumenthb
-      parameters:
-        - name: id
-          in: path
-          description: 'id dello strumento di pagamento, che corrisponde all''hash del PAN (Primary Account Number) del metodo di pagamento'
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
         '500':
           description: ''
   '/card/{id}':
@@ -76,15 +82,11 @@ paths:
           description: ''
         '500':
           description: Internal MedaCustom Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MicroServiceExceptionResponse'
   '/bpay/{id}':
     put:
       summary: enrollPaymentInstrumentHB BPay
       description: enrollPaymentInstrumentHB BancomatPay
-      operationId: 5f98984972e5123d4571984b
+      operationId: enrollPaymentInstrumentHBBPay
       parameters:
         - name: id
           in: path
@@ -110,11 +112,7 @@ paths:
         '403':
           description: ''
         '500':
-          description: Internal MedaCustom Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MicroServiceExceptionResponse'
+          description: ''
   '/satispay/{id}':
     put:
       summary: enrollPaymentInstrumentHB Satispay
@@ -145,23 +143,9 @@ paths:
         '403':
           description: ''
         '500':
-          description: Internal MedaCustom Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MicroServiceExceptionResponse'
+          description: ''
 components:
   schemas:
-    MicroServiceExceptionResponse:
-      title: MicroServiceExceptionResponse
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/MedaError'
-        mainError:
-          $ref: '#/components/schemas/MedaError'
     PaymentInstrumentResource:
       title: PaymentInstrumentResource
       type: object
@@ -197,34 +181,6 @@ components:
           type: string
         channel:
           type: string
-    PaymentInstrumentDto:
-      title: PaymentInstrumentDto
-      type: object
-      properties:
-        fiscalCode:
-          type: string
-          description: 'id dell''utente, che corrisponde al codice fiscale'
-        expireYear:
-          type: integer
-          description: anno di scadenza dello strumento di pagamento
-        expireMonth:
-          type: string
-          description: mese di scadenza dello strumento di pagamento
-        issuerAbiCode:
-          type: string
-          description: codice ABI della banca emittente carta
-        brand:
-          type: string
-          description: 'tipo circuito (es. Visa, Mastercard)'
-        holder:
-          type: string
-          description: titolare carta (nome e cognome)
-        type:
-          type: string
-          description: 'tipologia carta (es. PP, DEB, CRD)'
-        channel:
-          type: string
-          description: canale che identifica univocamente l'issuer sulla piattaforma
     PaymentInstrumentBPayBody:
       title: PaymentInstrumentBPayBody
       type: object
@@ -268,6 +224,43 @@ components:
             flagPreferredIncomingPI:
               type: boolean
               description: Se valorizzato a true indica che lo strumento a cui è associato è stato impostato come strumento di default per i pagamenti in entrata
+    PaymentInstrumentDto:
+      title: PaymentInstrumentDto
+      type: object
+      properties:
+        fiscalCode:
+          type: string
+          description: 'id dell''utente, che corrisponde al codice fiscale'
+        expireYear:
+          type: integer
+          description: anno di scadenza dello strumento di pagamento
+        expireMonth:
+          type: string
+          description: mese di scadenza dello strumento di pagamento
+        issuerAbiCode:
+          type: string
+          description: codice ABI della banca emittente carta
+        brand:
+          type: string
+          description: 'tipo circuito (es. Visa, Mastercard)'
+        holder:
+          type: string
+          description: titolare carta (nome e cognome)
+        type:
+          type: string
+          description: 'tipologia carta (es. PP, DEB, CRD)'
+        channel:
+          type: string
+          description: canale che identifica univocamente l'issuer sulla piattaforma
+      example:
+        fiscalCode: string
+        expireYear: 0
+        expireMonth: string
+        issuerAbiCode: string
+        brand: string
+        holder: string
+        type: string
+        channel: string
   securitySchemes:
     apiKeyHeader:
       type: apiKey
