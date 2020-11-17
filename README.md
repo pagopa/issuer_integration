@@ -10,7 +10,7 @@ The Interface Agreement (IA) will be published in this repository under the fold
 
 Starting from Tuesday 17/11 will be possible to join the Beta program in order to verify the Cashback features through the use of APP IO.
 
-### How to join the program
+#### How to join the program
 1. Please read the documents ("Informativa survey beta testing.docx", "Beta Test_NDA_long form_IT.docx") that can be found in the following path: /https://github.com/pagopa/issuer_integration/tree/master/ops_resources/PILOTA
 2. Compile properly the document "Beta Test_NDA_long form_IT.docx" and send it to the mailing address: teamCentroStella@sia.eu (fill in the parts highlighted in yellow)
 3. Please read the privacy policy for BANCOMAT and send an e-mail to teamCentroStella@sia.eu confirming your willingness to participate in the “pilot” (https://github.com/pagopa/issuer_integration/tree/master/ops_resources/PILOTA)
@@ -18,11 +18,11 @@ Starting from Tuesday 17/11 will be possible to join the Beta program in order t
 
 Once these steps have been completed, you will receive an invitation to participate in the test program with the appropriate instructions according to the operating system that has been indicated in the request to join the pilot.
 
-### Credit card registration and transaction’s verification procedures
+#### Credit card registration and transaction’s verification procedures
 Once the application is installed, we ask you to proceed with the registration of one or more Cards and join the "Bonus Pagamenti Digitali" program.
 From the 17/11 moment on, it will be possible to make payments on shop/stores in the national territory and check a few days later, that the transaction appears correctly in the APP IO’s dedicated section with its associated cashback (the rule is not definitive).
 
-### APP IO
+#### APP IO
 Below will be listed some useful information for using APP IO:
 - Registration of payment instruments:  can be done starting from the "Portafoglio" section, by clicking the "Aggiungi" button in the "Metodi di Pagamento" section.
 - Subscription to the BPD: Can be done from the " Portafoglio" section, by clicking the "Aggiungi" button in the "Bonus e sconti" section.
@@ -32,11 +32,11 @@ b. Payment methods, with relative activation / deactivation status
 c. Transactions details
 d. BPD service withdrawal option
 
-### Errors reporting
+#### Errors reporting
 In the event of a potential error detected and / or failure to view a transaction, you can open an “issue” by clicking on the question mark icon at the top right of every page and then click on the "Segnala un Bug" button.
 To discriminate and give priority to your reports, please report, in the body of the message, the “TEST_INTERNO_BPD” tag.
 
-### Points of attention
+#### Points of attention
 We kindly ask you to pay attention to the following notes:
 
 - Keep the POS printout. In the event of an error or failure to view the transactions, it will be useful to make the necessary check on that specific transaction
