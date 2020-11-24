@@ -97,3 +97,6 @@ Regarding the tests in the SIT environment, the client certificate can be self-s
 
 ### Where should be inserted the Subscription Key obtained after the registration to Azure Portal?
 After completing the subscription, the Client can invoke the services by inserting the key obtained "Ocp-Apim-Subscription-Key" as a parameter in the request header.
+
+### Will be possible to enroll also tokenized payment instruments?
+Currently, there are not available the enrollment interfaces related to tokenized payment instruments. 
