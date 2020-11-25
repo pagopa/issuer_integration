@@ -103,6 +103,11 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CitizenDeleteResource'
       responses:
         '204':
           description: ''
@@ -142,7 +147,7 @@ paths:
           content:
             application/json;charset=UTF-8:
               schema:
-                $ref: '#/components/schemas/CitizenRankingResource'
+                $ref: '#/components/schemas/CitizenRankingResourceArray'
         '401':
           description: Unauthorized
         '404':
@@ -266,6 +271,21 @@ components:
           type: integer
           description: identificativo univoco del periodo di premiazione
           format: int64
+    CitizenDeleteResource:
+      title: CitizenDeleteResource
+      required:
+        - channel
+      type: object
+      properties:
+        channel:
+          type: string
+          description: Canale che identifica univocamente l’issuer che invoca l’API sulla piattaforma. Valorizzato con il codice ABI dell’Issuer chiamante
+      example:
+        channel: string
+    CitizenRankingResourceArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/CitizenRankingResource'
   securitySchemes:
     apiKeyHeader:
       type: apiKey

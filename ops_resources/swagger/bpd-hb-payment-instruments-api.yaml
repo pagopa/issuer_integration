@@ -32,7 +32,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'id dello strumento di pagamento, che corrisponde all''hash del PAN (Primary Account Number) del metodo di pagamento'
+          description: 'id dello strumento di pagamento, che corrisponde al PAN (Primary Account Number) del metodo di pagamento'
           required: true
           schema:
             type: string
@@ -49,18 +49,11 @@ paths:
           description: Forbidden
         '500':
           description: ''
-  '/card/{id}':
+  /card:
     put:
       summary: enrollPaymentInstrumentHB
       description: enrollPaymentInstrumentHB
       operationId: enrollpaymentinstrumenthb
-      parameters:
-        - name: id
-          in: path
-          description: 'id dello strumento di pagamento cifrato con chiave pgp*, che corrisponde al PAN (Primary Account Number) del metodo di pagamento'
-          required: true
-          schema:
-            type: string
       requestBody:
         description: request
         content:
@@ -207,11 +200,14 @@ components:
       title: PaymentInstrumentDto
       type: object
       properties:
+        id:
+          type: string
+          description: 'id dello strumento di pagamento, che corrisponde al PAN (Personal Account Number) cifrato pgp'
         fiscalCode:
           type: string
           description: 'id dell''utente, che corrisponde al codice fiscale'
         expireYear:
-          type: integer
+          type: string
           description: anno di scadenza dello strumento di pagamento
         expireMonth:
           type: string
@@ -232,8 +228,9 @@ components:
           type: string
           description: canale che identifica univocamente l'issuer sulla piattaforma
       example:
+        id: string
         fiscalCode: string
-        expireYear: 0
+        expireYear: '0'
         expireMonth: string
         issuerAbiCode: string
         brand: string
@@ -254,7 +251,7 @@ components:
           type: string
         hpan:
           type: string
-        status:
+        Status:
           enum:
             - ACTIVE
             - INACTIVE
