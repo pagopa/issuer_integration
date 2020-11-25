@@ -21,6 +21,7 @@ paths:
         - name: awardPeriodId
           in: query
           description: Format - int64. identificativo univoco del periodo di premiazione
+          required: true
           schema:
             type: integer
       responses:
@@ -29,7 +30,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TotalScoreResource'
+                $ref: '#/components/schemas/TotalCashbackResource'
         '401':
           description: Unauthorized
         '404':
@@ -169,16 +170,19 @@ components:
           type: string
           description: timestamp dell'operazione di pagamento effettuata presso l'esercente
           format: date-time
-    TotalScoreResource:
-      title: TotalScoreResource
+    TotalCashbackResource:
+      title: TotalCashbackResource
       required:
-        - totalScore
+        - totalCashback
+        - transactionNumber
       type: object
       properties:
-        totalScore:
-          type: integer
-          format: int64
-      description: Somma del punteggio  per la carta associata
+        totalCashback:
+          type: number
+          description: 'Cashback transazione, indicato con segno ''-'' in caso di storno'
+        transactionNumber:
+          type: number
+          description: Numero delle transazioni effettuate dall'utente
   securitySchemes:
     apiKeyHeader:
       type: apiKey
