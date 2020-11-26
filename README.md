@@ -101,5 +101,5 @@ After completing the subscription, the Client can invoke the services by inserti
 ### Will be possible to enroll also tokenized payment instruments?
 Currently, there are not available the enrollment interfaces related to tokenized payment instruments. 
 
-### Where can be found the UAT pgp public key, necessary to perform the procedure of enrollment of cards?
-The pgp key can be found in the following path: https://github.com/pagopa/issuer_integration/tree/master/ops_resources/PGP%20key
+### Where can be found the UAT and PROD pgp public keys, necessary to perform the procedure of enrollment of cards?
+The pgp keys can be found in the following path: https://github.com/pagopa/issuer_integration/tree/master/ops_resources/PGP%20key
