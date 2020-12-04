@@ -103,3 +103,12 @@ Currently, there are not available the enrollment interfaces related to tokenize
 
 ### Where can be found the UAT and PROD pgp public keys, necessary to perform the procedure of enrollment of cards?
 The pgp keys can be found in the following path: https://github.com/pagopa/issuer_integration/tree/master/ops_resources/PGP%20key
+
+### In the API of Enrolment of the card what data should be contained in the parameters: IssuerAbiCode and Channel, with a particular reference to the case of the Participant Issuers which issue cards and provide interfaces for their Clients, but the Principal Member is a different Bank?
+The expected values in the "issuerAbiCode" and "channel" fields are the following:
+  1. "IssuerAbiCode" - valued with the Principal's ABI code
+  2. "channel" - contains the Issuer's ABI code which provides the interface to its own client. This field can therefore be filled in with the ABI code of the Participant Bank   or with the ABI code of the Principal Member based on which Issuer provides the interface. 
+  
+  For example:
+  a. if the request (enrollment payment Instrument or Unsubscribe User) is coming from a Participant Issuer, in the field "channel" is expected to be received the Participant’s  ABI code (es. Bank B with ABI Code =2), while the "IssuerAbiCode" should correspond to the Principal's ABI Code (Bank A with ABI code= 1)
+  b. if the request comes from a Principal Issuer we expect both parameters to contain the same code (ABI code = 1).
