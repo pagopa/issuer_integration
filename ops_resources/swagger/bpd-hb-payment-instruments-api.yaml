@@ -77,18 +77,11 @@ paths:
           description: ''
         '409':
           description: ''
-  '/bpay/{id}':
+  /bpay:
     put:
       summary: enrollPaymentInstrumentHB BPay
       description: enrollPaymentInstrumentHB BancomatPay
       operationId: 5f98984972e5123d4571984b
-      parameters:
-        - name: id
-          in: path
-          description: 'id univoco dello strumento di pagamento, che corrisponde al valore cifrato della stringa “ABI+numero di cellulare”'
-          required: true
-          schema:
-            type: string
       requestBody:
         description: request
         content:
@@ -111,6 +104,48 @@ paths:
         '400':
           description: ''
         '409':
+          description: ''
+    delete:
+      summary: BPay deletePaymentInstrumentHB
+      operationId: 5fdb377a52411ce8e7b9d5f6
+      parameters:
+        - name: id
+          in: query
+          description: id dello strumento che corrisponde a ABI+Numero cifrati
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: ''
+    get:
+      summary: BPay statusPaymentInstrumentHB
+      operationId: 5fdb37ee7e211f8e0ac2dc45
+      parameters:
+        - name: id
+          in: query
+          description: id dello strumento che corrisponde a ABI+Numero cifrato
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInstrumentResource'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
           description: ''
   '/satispay/{id}':
     put:
@@ -146,6 +181,28 @@ paths:
         '400':
           description: ''
         '409':
+          description: ''
+  /:
+    patch:
+      summary: patchPaymentInstrument
+      operationId: patchPaymentInstrument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPaymentInstrumentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentPaymentInstrumentResource'
+        '404':
+          description: ''
+        '401':
+          description: ''
+        '500':
           description: ''
 components:
   schemas:
@@ -184,60 +241,6 @@ components:
             - ACTIVE
             - INACTIVE
           type: string
-    PaymentInstrumentBPayBody:
-      title: PaymentInstrumentBPayBody
-      type: object
-      properties:
-        fiscalCode:
-          type: string
-          description: 'id dell’utente, che corrisponde al codice fiscale'
-        channel:
-          type: string
-          description: canale che identifica univocamente l'issuer sulla piattaforma
-        groupCode:
-          type: string
-          description: Codice ABI del gruppo a cui appartiene la banca indicata nel campo InstituteCode
-        instituteCode:
-          type: string
-          description: Codice ABI dell’istituto dell’utente
-        bank:
-          type: string
-          description: nome della Banca issuer
-        nameHolder:
-          type: string
-          description: Nome offuscato del titolare conto
-        surnameHolder:
-          type: string
-          description: Cognome offuscato del titolare conto
-        phoneNumber:
-          type: string
-          description: Numero di cellulare del titolare conto offuscato
-        serviceStatus:
-          enum:
-            - ATT
-            - DIS
-            - SOSP
-            - SAT_GG
-            - SAT_MM
-            - SAT_NO
-            - NFC_IN_COR
-            - NFC_ESTINTO
-            - ATTPND
-            - DISPND
-          type: string
-          description: stato del servizio
-        infoPaymentInstrument:
-          type: object
-          properties:
-            iban:
-              type: string
-              description: iban offuscato
-            flagPreferredPaymentPI:
-              type: boolean
-              description: Se valorizzato a true indica che lo strumento a cui è associato è stato impostato come strumento di default per i pagamenti in uscita
-            flagPreferredIncomingPI:
-              type: boolean
-              description: Se valorizzato a true indica che lo strumento a cui è associato è stato impostato come strumento di default per i pagamenti in entrata
     PaymentInstrumentDto:
       title: PaymentInstrumentDto
       type: object
@@ -301,6 +304,100 @@ components:
         tokenPanList:
           - string
         PAR: string
+    PaymentInstrumentBPayBody:
+      title: PaymentInstrumentBPayBody
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'id dello strumento di pagamento, che corrisponde a ABI+Cellulare cifrati'
+        fiscalCode:
+          type: string
+          description: 'id dell’utente, che corrisponde al codice fiscale'
+        channel:
+          type: string
+          description: canale che identifica univocamente l'issuer sulla piattaforma
+        groupCode:
+          type: string
+          description: Codice ABI del gruppo a cui appartiene la banca indicata nel campo InstituteCode
+        instituteCode:
+          type: string
+          description: Codice ABI dell’istituto dell’utente
+        bank:
+          type: string
+          description: nome della Banca issuer
+        nameHolder:
+          type: string
+          description: Nome offuscato del titolare conto
+        surnameHolder:
+          type: string
+          description: Cognome offuscato del titolare conto
+        phoneNumber:
+          type: string
+          description: Numero di cellulare del titolare conto offuscato
+        cryptedPhoneNumber:
+          type: string
+          description: Numero di cellulare del titolare conto criptato
+        serviceStatus:
+          enum:
+            - ATT
+            - DIS
+            - SOSP
+            - SAT_GG
+            - SAT_MM
+            - SAT_NO
+            - NFC_IN_COR
+            - NFC_ESTINTO
+            - ATTPND
+            - DISPND
+          type: string
+          description: stato del servizio
+        infoPaymentInstrument:
+          type: object
+          properties:
+            iban:
+              type: string
+              description: iban offuscato
+            flagPreferredPaymentPI:
+              type: boolean
+              description: Se valorizzato a true indica che lo strumento a cui è associato è stato impostato come strumento di default per i pagamenti in uscita
+            flagPreferredIncomingPI:
+              type: boolean
+              description: Se valorizzato a true indica che lo strumento a cui è associato è stato impostato come strumento di default per i pagamenti in entrata
+      example:
+        id: string
+        fiscalCode: string
+        channel: string
+        groupCode: string
+        instituteCode: string
+        bank: string
+        nameHolder: string
+        surnameHolder: string
+        phoneNumber: string
+        cryptedPhoneNumber: string
+        serviceStatus: string
+        infoPaymentInstrument:
+          iban: string
+          flagPreferredPaymentPI: false
+          flagPreferredIncomingPI: false
+    PatchPaymentInstrumentDto:
+      title: PatchPaymentInstrumentDto
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'id dello strumento di pagamento, che corrisponde al PAN (Personal Account Number) cifrato pgp'
+        fiscalCode:
+          type: string
+          description: 'id dell''utente, che corrisponde al codice fiscale'
+        tokenPanList:
+          type: array
+          items:
+            type: string
+          description: elenco dei PAN tokenizzati collegati alla scheda fisica
+        PAR:
+          type: string
+          description: corrisponde al Payment Account Reference
   securitySchemes:
     apiKeyHeader:
       type: apiKey
