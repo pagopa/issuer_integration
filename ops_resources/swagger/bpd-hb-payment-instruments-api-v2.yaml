@@ -8,8 +8,6 @@ servers:
 paths:
   /:
     delete:
-      tags:
-        - Bonus Pagamenti Digitali Payment Instrument Controller
       summary: deletePaymentInstrumentHB
       operationId: deletepaymentinstrumenthb
       parameters:
@@ -29,8 +27,6 @@ paths:
         '500':
           description: ''
     get:
-      tags:
-        - Bonus Pagamenti Digitali Payment Instrument Controller
       summary: statusPaymentInstrumentHB
       operationId: statuspaymentinstrumenthb
       parameters:
@@ -54,8 +50,6 @@ paths:
         '500':
           description: ''
     patch:
-      tags:
-        - Bonus Pagamenti Digitali Payment Instrument Controller
       summary: patchPaymentInstrument
       operationId: patchPaymentInstrument
       requestBody:
@@ -76,69 +70,8 @@ paths:
           description: ''
         '500':
           description: ''
-  /card:
-    put:
-      tags:
-        - Bonus Pagamenti Digitali Payment Instrument Controller
-      summary: enrollPaymentInstrumentHB
-      description: enrollPaymentInstrumentHB
-      operationId: enrollpaymentinstrumenthb
-      requestBody:
-        description: request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentInstrumentDto'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EnrollmentPaymentInstrumentResource'
-        '401':
-          description: ''
-        '403':
-          description: ''
-        '500':
-          description: Internal MedaCustom Server Error
-        '400':
-          description: ''
-        '409':
-          description: ''
   /bpay:
-    put:
-      tags:
-        - Bonus Pagamenti Digitali Payment Instrument Controller
-      summary: enrollPaymentInstrumentHB BPay
-      description: enrollPaymentInstrumentHB BancomatPay
-      operationId: 5f98984972e5123d4571984b
-      requestBody:
-        description: request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentInstrumentBPayBody'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EnrollmentPaymentInstrumentResource'
-        '401':
-          description: ''
-        '403':
-          description: ''
-        '500':
-          description: Internal MedaCustom Server Error
-        '400':
-          description: ''
-        '409':
-          description: ''
     delete:
-      tags:
-        - Bonus Pagamenti Digitali Payment Instrument Controller
       summary: BPay deletePaymentInstrumentHB
       operationId: 5fdb377a52411ce8e7b9d5f6
       parameters:
@@ -158,8 +91,6 @@ paths:
         '500':
           description: ''
     get:
-      tags:
-        - Bonus Pagamenti Digitali Payment Instrument Controller
       summary: BPay statusPaymentInstrumentHB
       operationId: 5fdb37ee7e211f8e0ac2dc45
       parameters:
@@ -182,43 +113,6 @@ paths:
           description: Forbidden
         '500':
           description: ''
-  '/satispay/{id}':
-    put:
-      tags:
-        - Bonus Pagamenti Digitali Payment Instrument Controller
-      summary: enrollPaymentInstrumentHB Satispay
-      description: enrollPaymentInstrumentHB Satispay
-      operationId: 5f9899f7c937adaa325c239c
-      parameters:
-        - name: id
-          in: path
-          description: id univoco dello strumento di pagamento (ID Customer)
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentInstrumentSatispayBody'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EnrollmentPaymentInstrumentResource'
-        '401':
-          description: ''
-        '403':
-          description: ''
-        '500':
-          description: Internal MedaCustom Server Error
-        '400':
-          description: ''
-        '409':
-          description: ''
 components:
   schemas:
     EnrollmentPaymentInstrumentResource:
@@ -229,14 +123,6 @@ components:
           type: string
           description: Timestamp dell’attivazione dello strumento di pagamento. FORMATO  ISO8601 yyyy-MM-ddTHH:mm:ss.SSSXXXXX
           format: date-time
-    PaymentInstrumentSatispayBody:
-      title: PaymentInstrumentSatispayBody
-      type: object
-      properties:
-        fiscalCode:
-          type: string
-        channel:
-          type: string
     PaymentInstrumentResource:
       title: PaymentInstrumentResource
       type: object
@@ -256,6 +142,24 @@ components:
             - ACTIVE
             - INACTIVE
           type: string
+    PatchPaymentInstrumentDto:
+      title: PatchPaymentInstrumentDto
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'id dello strumento di pagamento, che corrisponde al PAN (Personal Account Number) cifrato pgp'
+        fiscalCode:
+          type: string
+          description: 'id dell''utente, che corrisponde al codice fiscale'
+        tokenPanList:
+          type: array
+          items:
+            type: string
+          description: elenco dei PAN tokenizzati collegati alla scheda fisica
+        PAR:
+          type: string
+          description: corrisponde al Payment Account Reference
     PaymentInstrumentDto:
       title: PaymentInstrumentDto
       type: object
@@ -283,6 +187,7 @@ components:
             - VISA_ELECTRON
             - AMEX
             - OTHER
+            - PAGOBANCOMAT
           type: string
           description: 'tipo circuito (es. Visa, Mastercard)'
         holder:
@@ -319,100 +224,6 @@ components:
         tokenPanList:
           - string
         PAR: string
-    PaymentInstrumentBPayBody:
-      title: PaymentInstrumentBPayBody
-      type: object
-      properties:
-        id:
-          type: string
-          description: 'id dello strumento di pagamento, che corrisponde a ABI+Cellulare cifrati'
-        fiscalCode:
-          type: string
-          description: 'id dell’utente, che corrisponde al codice fiscale'
-        channel:
-          type: string
-          description: canale che identifica univocamente l'issuer sulla piattaforma
-        groupCode:
-          type: string
-          description: Codice ABI del gruppo a cui appartiene la banca indicata nel campo InstituteCode
-        instituteCode:
-          type: string
-          description: Codice ABI dell’istituto dell’utente
-        bank:
-          type: string
-          description: nome della Banca issuer
-        nameHolder:
-          type: string
-          description: Nome offuscato del titolare conto
-        surnameHolder:
-          type: string
-          description: Cognome offuscato del titolare conto
-        phoneNumber:
-          type: string
-          description: Numero di cellulare del titolare conto offuscato
-        cryptedPhoneNumber:
-          type: string
-          description: Numero di cellulare del titolare conto criptato
-        serviceStatus:
-          enum:
-            - ATT
-            - DIS
-            - SOSP
-            - SAT_GG
-            - SAT_MM
-            - SAT_NO
-            - NFC_IN_COR
-            - NFC_ESTINTO
-            - ATTPND
-            - DISPND
-          type: string
-          description: stato del servizio
-        infoPaymentInstrument:
-          type: object
-          properties:
-            iban:
-              type: string
-              description: iban offuscato
-            flagPreferredPaymentPI:
-              type: boolean
-              description: Se valorizzato a true indica che lo strumento a cui è associato è stato impostato come strumento di default per i pagamenti in uscita
-            flagPreferredIncomingPI:
-              type: boolean
-              description: Se valorizzato a true indica che lo strumento a cui è associato è stato impostato come strumento di default per i pagamenti in entrata
-      example:
-        id: string
-        fiscalCode: string
-        channel: string
-        groupCode: string
-        instituteCode: string
-        bank: string
-        nameHolder: string
-        surnameHolder: string
-        phoneNumber: string
-        cryptedPhoneNumber: string
-        serviceStatus: string
-        infoPaymentInstrument:
-          iban: string
-          flagPreferredPaymentPI: false
-          flagPreferredIncomingPI: false
-    PatchPaymentInstrumentDto:
-      title: PatchPaymentInstrumentDto
-      type: object
-      properties:
-        id:
-          type: string
-          description: 'id dello strumento di pagamento, che corrisponde al PAN (Personal Account Number) cifrato pgp'
-        fiscalCode:
-          type: string
-          description: 'id dell''utente, che corrisponde al codice fiscale'
-        tokenPanList:
-          type: array
-          items:
-            type: string
-          description: elenco dei PAN tokenizzati collegati alla scheda fisica
-        PAR:
-          type: string
-          description: corrisponde al Payment Account Reference
   securitySchemes:
     apiKeyHeader:
       type: apiKey
