@@ -182,49 +182,6 @@ paths:
           description: ''
         '409':
           description: ''
-  '/hash/{id}':
-    delete:
-      summary: Hash deletePaymentInstrumentHB
-      operationId: 5fc27284aa516e24c0ba5676
-      parameters:
-        - name: id
-          in: path
-          description: 'id dello strumento di pagamento, che corrisponde al PAN (Primary Account Number) del metodo di pagamento'
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized
-        '500':
-          description: ''
-    get:
-      summary: Hash statusPaymentInstrumentHB
-      operationId: 5fc2750a6f81425126cb2b3c
-      parameters:
-        - name: id
-          in: path
-          description: 'id dello strumento di pagamento, che corrisponde al PAN (Primary Account Number) del metodo di pagamento'
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentResource'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '500':
-          description: ''
   /:
     patch:
       summary: patchPaymentInstrument
@@ -412,14 +369,19 @@ components:
       properties:
         id:
           type: string
+          description: identificativo unico dello strumento di pagamento cifrato con una chiave pgp
         fiscalCode:
           type: string
+          description: codice fiscale dell’utente
         channel:
           type: string
-        descriptionIssuer:
+          description: canale che identifica l’Issuer in modo univoco sulla piattaforma BPD. Tale campo verrà valorizzato con una stringa fissa per ciascun Issuer
+        description:
           type: string
-        brand:
+          description: identificativo dello strumento di pagamento noto all’utente contenente ulteriori dettagli che permettono di identificare in modo univoco lo strumento di pagamento
+        instrumentBrand:
           type: string
+          description: valore fisso, concordato in fase di integrazione, identificativo della tipologia dello strumento di pagamento
     PaymentInstrumentDto:
       title: PaymentInstrumentDto
       type: object
