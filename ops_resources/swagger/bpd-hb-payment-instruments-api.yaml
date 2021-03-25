@@ -382,6 +382,20 @@ components:
         instrumentBrand:
           type: string
           description: valore fisso, concordato in fase di integrazione, identificativo della tipologia dello strumento di pagamento
+        additionalInfo:
+          type: string
+          description: informazione addizionale, a discrezione dell''issuer, utile all''utente per identificare lo strumento di pagamento
+        additionalInfo2:
+          type: string
+          description: ulteriore informazione addizionale, a discrezione dell''issuer, utile all''utente per identificare lo strumento di pagamento
+      example:
+        id: string
+        fiscalCode: string
+        channel: string
+        description: string
+        instrumentBrand: string
+        additionalInfo: string
+        additionalInfo2: string
     PaymentInstrumentDto:
       title: PaymentInstrumentDto
       type: object
