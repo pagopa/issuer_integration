@@ -72,3 +72,23 @@ The expected values in the "issuerAbiCode" and "channel" fields are the followin
   For example:
   a. if the request (enrollment payment Instrument or Unsubscribe User) is coming from a Participant Issuer, in the field "channel" is expected to be received the Participant’s  ABI code (es. Bank B with ABI Code =2), while the "IssuerAbiCode" should correspond to the Principal's ABI Code (Bank A with ABI code= 1)
   b. if the request comes from a Principal Issuer we expect both parameters to contain the same code (ABI code = 1).
+  
+## FAQ & troubleshooting - TOKENIZED CARDS
+
+### How the User could allow the use of his own Tokenized Cards?
+The user could activate the Tokenized Card/s for BPD (and/or FA in the Future) by using the touch point of the Issuer App (or the AppIo). The details of the User approval will be saved in the Token Manager’s repository.
+The Token Manager (TKM) module will expose a new microservice (API get user status tokenizzate) to retrieve the status of the approval for the use of the Tokenized Card/s to the other systems.
+The Issuer App could invoke the API get user status tokenizzate to show the User’s approval for the activation of his own Tokenized Cards.
+When the User approves for the use of his own Tokenized Card/s, gives a permit to the TKM to retrieve the PAR/TokenPAN pair (through the API patch payment instruments) in order to save them for the related Payment instruments.
+
+### How to enroll a Tokenized Card?
+Through the payment instrument enrolment API (PUT /bpd/hb/payment-instruments/card), it will be possible to enroll a Physical Card while sending both “TokenPanList” and “PAR” associated to the card. Both “PAR” and “TokenPanList” parameters will be optional, in order to allow the User to activate payment instruments if they have not been tokenized yet.
+However, the presence of the “TokenPanList” is always constrained to the “PAR” valorization.  The TokenPAN received will be saved as children of the parent payment instrument (physical card) and will inherit the same enrolment date of the PAR (The PAR allows the link between TokenPans and the PAN of the parent physical card thanks to the unique and immutable relationship among PAN, TokenPAN and PAR).
+
+### How to Update Payment Instruments Tokens?
+A patch service will allow to update the tokens associated to a payment instrument (identified by the HPAN) which is already active on BPD.
+The Issuer will sent all the PARs and all the active and valid tokens associated to the PAN at the time of the request. Centro Stella will save the new associations tokenPAN / PAR on the internal database and will logically delete the ones which are not present.
+Please note that for the PARs that are already present in the BPD database, the first valid date of enrolment will not be updated/modified. All the sent tokens will acquire by default the PAR activation date as their enrolment date. If the patch request contains only the encrypted PAN this would been that the card doesn't have any valid tokens associated.
+
+### How to deactivate Payment Instrument's Token?
+In order to complete the life cycle of a card, regardless of whether it is tokenized or not, it was decided to include in the tokenized solutions, currently not available to Issuers. The service can be invoked by Home/Mobile Banking in order to cancel a payment instrument (pgp encrypted PAN). Deleting a parent card will have the immediate effect of disabling active services on the same and on all related tokens if present.
