@@ -1,10 +1,13 @@
 # Issuer Integration
 
 ## Roadmap
-In the following image is synthesized our current roadmap.
+In the following image is synthesized the state of the art of Cashback Service.
 
 The Interface Agreement (IA) will be published in this repository under the folder /ops resources/swagger in .yaml format.
 ![Minimal_Config](readme_screens/Roadmap.png)
+
+In the following image is synthesized the roadmap for Tokenized Cards.
+![Minimal_Config](readme_screens/Roadmap1.png)
 
 ## FAQ & troubleshooting
 
